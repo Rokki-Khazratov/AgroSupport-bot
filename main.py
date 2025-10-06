@@ -31,9 +31,9 @@ async def main():
     # Создаем диспетчер
     dp = Dispatcher()
     
-    # Регистрируем роутеры
-    dp.include_router(user_handlers.router)
+    # Регистрируем роутеры (admin_handlers первым для приоритета)
     dp.include_router(admin_handlers.router)
+    dp.include_router(user_handlers.router)
     
     try:
         logger.info("🚀 Запуск бота поддержки...")
