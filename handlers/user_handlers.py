@@ -62,6 +62,14 @@ async def help_handler(message: Message):
 @router.message(F.text | F.photo | F.document | F.video | F.audio | F.voice | F.video_note | F.sticker)
 async def create_ticket_handler(message: Message, bot):
     """Обработчик создания заявки от пользователя"""
+    
+    # Обрабатываем только сообщения из личных чатов (не из групп)
+    if message.chat.type != 'private':
+        return
+    
+    # Игнорируем команды (они обрабатываются отдельно)
+    if message.text and message.text.startswith('/'):
+        return
     user = message.from_user
     user_id = user.id
     user_name = user.full_name or "Неизвестно"
