@@ -7,7 +7,6 @@ load_dotenv()
 # Основные настройки бота
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 ADMIN_GROUP_ID = os.getenv('ADMIN_GROUP_ID')
-DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///support_bot.db')
 
 # Проверка обязательных переменных окружения
 if not BOT_TOKEN:
@@ -17,9 +16,4 @@ if not ADMIN_GROUP_ID:
     raise ValueError("ADMIN_GROUP_ID не найден в переменных окружения. Создайте .env файл на основе env.example")
 
 # Дополнительные настройки
-MAX_MESSAGE_LENGTH = 4000  # Максимальная длина сообщения в Telegram
 LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
-
-# Настройки базы данных
-DB_POOL_SIZE = 10
-DB_MAX_OVERFLOW = 20

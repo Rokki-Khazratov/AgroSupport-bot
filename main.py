@@ -5,7 +5,6 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
 from config import BOT_TOKEN, LOG_LEVEL
-from middleware.database_middleware import DatabaseMiddleware
 from handlers import user_handlers, admin_handlers
 
 # Настройка логирования
@@ -13,7 +12,6 @@ logging.basicConfig(
     level=getattr(logging, LOG_LEVEL.upper()),
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('bot.log'),
         logging.StreamHandler()
     ]
 )
@@ -33,18 +31,15 @@ async def main():
     # Создаем диспетчер
     dp = Dispatcher()
     
-    # Добавляем middleware
-    dp.message.middleware(DatabaseMiddleware())
-    
     # Регистрируем роутеры
     dp.include_router(user_handlers.router)
     dp.include_router(admin_handlers.router)
     
     try:
-        logger.info("Запуск бота...")
+        logger.info("🚀 Запуск бота поддержки...")
         await dp.start_polling(bot)
     except Exception as e:
-        logger.error(f"Ошибка при запуске бота: {e}")
+        logger.error(f"❌ Ошибка при запуске бота: {e}")
     finally:
         await bot.session.close()
 
@@ -53,6 +48,6 @@ if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        logger.info("Бот остановлен пользователем")
+        logger.info("⏹️ Бот остановлен пользователем")
     except Exception as e:
-        logger.error(f"Критическая ошибка: {e}")
+        logger.error(f"💥 Критическая ошибка: {e}")
