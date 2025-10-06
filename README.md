@@ -1,118 +1,110 @@
-# AgroSupport Bot - Простая версия
+# AgroSupport Bot - Qo'llab-quvvatlash boti
 
-Максимально простой Telegram бот для приема заявок от пользователей с автоматической пересылкой в группу администраторов и системой ответов.
+Foydalanuvchilardan arizalarni qabul qilish va administratorlar guruhiga avtomatik yuborish uchun oddiy Telegram bot.
 
-## 🎯 Функциональность
+## 🎯 Funksiyalar
 
-### Для пользователей:
+### Foydalanuvchilar uchun:
+- 📝 Har qanday xabar orqali ariza yaratish
+- ✅ Ariza qabul qilinganini tasdiqlash
+- 💬 Administratorlardan javob olish
+- 📎 Rasm, hujjat va boshqa media fayllar yuborish
 
-- 📝 Создание заявок любым сообщением
-- ✅ Подтверждение получения заявки
-- 💬 Получение ответов от администраторов
+### Administratorlar uchun:
+- 📨 Barcha arizalarni guruhda olish
+- 💬 Ariza xabariga javob berish orqali foydalanuvchiga javob yuborish
+- 🔄 Javobni avtomatik foydalanuvchiga yuborish
+- 📎 Media fayllar bilan javob berish
 
-### Для администраторов:
+## 🚀 O'rnatish va ishga tushirish
 
-- 📨 Получение всех заявок в группе
-- 💬 Ответ через reply на сообщение заявки
-- 🔄 Автоматическая пересылка ответа пользователю
-
-## 🚀 Установка и запуск
-
-### 1. Клонирование репозитория
-
+### 1. Loyihani klonlash
 ```bash
 git clone https://github.com/Rokki-Khazratov/AgroSupport-bot.git
 cd AgroSupport-bot
 ```
 
-### 2. Установка зависимостей
-
+### 2. Zarur kutubxonalarni o'rnatish
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Настройка конфигурации
-
+### 3. Sozlashni tayyorlash
 ```bash
 cp env.example .env
 ```
 
-Отредактируйте файл `.env`:
-
+.env faylini tahrirlang:
 ```env
-BOT_TOKEN=your_bot_token_here
-ADMIN_GROUP_ID=your_admin_group_id_here
+BOT_TOKEN=sizning_bot_token_ingiz
+ADMIN_GROUP_ID=sizning_admin_guruhi_id_si
+ADMIN_ID=admin_user_id
 LOG_LEVEL=INFO
 ```
 
-### 4. Получение токена бота
+### 4. Bot token olish
+1. Telegram da [@BotFather](https://t.me/BotFather) ni toping
+2. `/newbot` buyrug'ini yuboring
+3. Ko'rsatmalar bo'yicha bot yarating
+4. Olingan tokenni .env ga qo'shing
 
-1. Найдите [@BotFather](https://t.me/BotFather) в Telegram
-2. Отправьте команду `/newbot`
-3. Следуйте инструкциям для создания бота
-4. Скопируйте полученный токен в `.env`
+### 5. Administratorlar guruhini sozlash
+1. Telegram da guruh yarating
+2. Bot ni guruhga administrator sifatida qo'shing
+3. Guruh ID sini oling ([@userinfobot](https://t.me/userinfobot) orqali)
+4. ID ni .env ga qo'shing
 
-### 5. Настройка группы администраторов
-
-1. Создайте группу в Telegram
-2. Добавьте бота в группу как администратора
-3. Получите ID группы (можно через [@userinfobot](https://t.me/userinfobot))
-4. Добавьте ID группы в `.env`
-
-### 6. Запуск бота
-
+### 6. Bot ni ishga tushirish
 ```bash
 python main.py
 ```
 
-## 📁 Структура проекта
+## 📁 Loyiha tuzilishi
 
 ```
 agro-support-leads/
-├── main.py                    # Основной файл бота
-├── config.py                  # Конфигурация
+├── main.py                    # Bot asosiy fayli
+├── config.py                  # Sozlamalar
 ├── handlers/
-│   ├── user_handlers.py       # Обработчики для пользователей
-│   └── admin_handlers.py      # Обработчики для админов
+│   ├── user_handlers.py       # Foydalanuvchilar uchun ishlovchilar
+│   └── admin_handlers.py      # Administratorlar uchun ishlovchilar
 ├── requirements.txt
 ├── .env
 └── README.md
 ```
 
-## 💻 Команды
+## 💻 Buyruqlar
 
-### Для пользователей:
+### Foydalanuvchilar uchun:
+- `/start` - salom va ko'rsatmalar
+- `/help` - ishlatish bo'yicha yordam
+- Har qanday xabar - ariza yaratish
 
-- `/start` - приветствие и инструкции
-- `/help` - справка по использованию
-- Любое сообщение - создание заявки
+### Administratorlar uchun (guruhda):
+- Ariza xabariga javob berish - foydalanuvchiga javob yuborish
 
-### Для администраторов (в группе):
+## 🔧 Qanday ishlaydi
 
-- Reply на сообщение заявки - ответ пользователю
+1. **Foydalanuvchi xabar yuboradi** → Bot uni administratorlar guruhiga yuboradi
+2. **Administrator javob beradi** → Bot avtomatik javobni foydalanuvchiga yuboradi
+3. **Ma'lumotlar bazasi yo'q** → Barcha ma'lumotlar xabarlar orqali uzatiladi
 
-## 🔧 Как это работает
+## ✨ Xususiyatlar
 
-1. **Пользователь отправляет сообщение** → Бот пересылает его в группу администраторов с пометкой
-2. **Администратор отвечает через reply** → Бот автоматически пересылает ответ пользователю
-3. **Никаких баз данных** → Вся информация передается через сообщения
+- 🚀 **Maksimal oddiy** - ma'lumotlar bazasi va murakkab mantiq yo'q
+- ⚡ **Tez ishga tushirish** - minimal bog'liqliklar
+- 🔄 **Avtomatik yuborish** - javoblar foydalanuvchilarga darhol yetib boradi
+- 📱 **Media qo'llab-quvvatlash** - rasm, hujjat, ovoz yuborish mumkin
+- 🛡️ **Xavfsizlik** - faqat sozlangan guruhda ishlaydi
 
-## ✨ Особенности
-
-- 🚀 **Максимально просто** - без баз данных и сложной логики
-- ⚡ **Быстрый запуск** - минимум зависимостей
-- 🔄 **Автоматическая пересылка** - ответы доходят до пользователей мгновенно
-- 📱 **Поддержка медиа** - можно отправлять фото, документы, голосовые
-- 🛡️ **Безопасность** - работает только в настроенной группе
-
-## 📝 Лицензия
+## 📝 Litsenziya
 
 MIT License
 
-## 🤝 Вклад в проект
+## 🤝 Loyihaga hissa qo'shish
 
-1. Fork проекта
-2. Создайте feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit изменения (`git commit -m 'Add some AmazingFeature'`)
-4. Push в branch (`git push origin feature/AmazingFeature`)
-5. Откройте Pull Request
+1. Loyihani fork qiling
+2. Feature branch yarating (`git checkout -b feature/AmazingFeature`)
+3. O'zgarishlarni commit qiling (`git commit -m 'Add some AmazingFeature'`)
+4. Branch ga push qiling (`git push origin feature/AmazingFeature`)
+5. Pull Request oching

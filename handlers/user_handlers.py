@@ -13,11 +13,11 @@ router = Router()
 async def start_handler(message: Message):
     """Обработчик команды /start"""
     welcome_text = (
-        f"👋 {hbold('Добро пожаловать в службу поддержки!')}\n\n"
-        f"📝 {hitalic('Отправьте любое сообщение, чтобы создать заявку')}\n\n"
-        f"🔧 {hbold('Доступные команды:')}\n"
-        f"• /help - помощь и инструкции\n\n"
-        f"💬 {hitalic('Мы поможем вам решить любые вопросы!')}"
+        f"👋 {hbold('Qo\'llab-quvvatlash xizmatiga xush kelibsiz!')}\n\n"
+        f"📝 {hitalic('Ariza yaratish uchun har qanday xabar yuboring')}\n\n"
+        f"🔧 {hbold('Mavjud buyruqlar:')}\n"
+        f"• /help - yordam va ko'rsatmalar\n\n"
+        f"💬 {hitalic('Biz sizga har qanday savollarni hal qilishda yordam beramiz!')}"
     )
     
     await message.answer(welcome_text)
@@ -30,10 +30,10 @@ async def get_id_handler(message: Message):
     chat_type = message.chat.type
     
     await message.answer(
-        f"🆔 <b>Информация о чате:</b>\n\n"
-        f"📊 <b>Тип:</b> {chat_type}\n"
+        f"🆔 <b>Chat haqida ma'lumot:</b>\n\n"
+        f"📊 <b>Turi:</b> {chat_type}\n"
         f"🆔 <b>ID:</b> <code>{chat_id}</code>\n\n"
-        f"💡 <i>Скопируйте этот ID для настройки бота</i>",
+        f"💡 <i>Bot sozlash uchun bu ID ni nusxalang</i>",
         parse_mode="HTML"
     )
 
@@ -42,18 +42,18 @@ async def get_id_handler(message: Message):
 async def help_handler(message: Message):
     """Обработчик команды /help"""
     help_text = (
-        f"📚 {hbold('Помощь по использованию бота')}\n\n"
-        f"🎫 {hbold('Как создать заявку:')}\n"
-        f"• Просто отправьте любое сообщение боту\n"
-        f"• Опишите вашу проблему или вопрос\n"
-        f"• Можно прикреплять фото и документы\n\n"
-        f"📊 {hbold('Команды:')}\n"
-        f"• /start - начать работу с ботом\n"
-        f"• /help - эта справка\n\n"
-        f"⏰ {hbold('Время ответа:')}\n"
-        f"• Обычно мы отвечаем в течение 24 часов\n"
-        f"• В экстренных случаях - быстрее\n\n"
-        f"❓ {hitalic('Есть вопросы? Отправьте сообщение!')}"
+        f"📚 {hbold('Bot ishlatish bo\'yicha yordam')}\n\n"
+        f"🎫 {hbold('Ariza qanday yaratish:')}\n"
+        f"• Bot ga har qanday xabar yuboring\n"
+        f"• Muammoingiz yoki savolingizni tasvirlab bering\n"
+        f"• Rasmlar va hujjatlarni biriktirish mumkin\n\n"
+        f"📊 {hbold('Buyruqlar:')}\n"
+        f"• /start - bot bilan ishlashni boshlash\n"
+        f"• /help - bu yordam\n\n"
+        f"⏰ {hbold('Javob vaqti:')}\n"
+        f"• Odatda 24 soat ichida javob beramiz\n"
+        f"• Favqulodda holatlarda - tezroq\n\n"
+        f"❓ {hitalic('Savollar bormi? Xabar yuboring!')}"
     )
     
     await message.answer(help_text)
@@ -88,11 +88,11 @@ async def handle_media_group_handler(message: Message, bot):
     try:
         # Отправляем уведомление о медиагруппе
         group_message = (
-            f"🎫 <b>Новая заявка (Медиагруппа)</b>\n\n"
-            f"👤 <b>Пользователь:</b> {user_info}\n"
-            f"⏰ <b>Время:</b> {datetime.now().strftime('%d.%m.%Y %H:%M')}\n"
-            f"📎 <b>Медиафайлов:</b> Группа файлов\n\n"
-            f"💬 <i>Ответьте на это сообщение, чтобы ответить пользователю</i>"
+            f"🎫 <b>Yangi ariza (Media guruhi)</b>\n\n"
+            f"👤 <b>Foydalanuvchi:</b> {user_info}\n"
+            f"⏰ <b>Vaqt:</b> {datetime.now().strftime('%d.%m.%Y %H:%M')}\n"
+            f"📎 <b>Media fayllar:</b> Fayllar guruhi\n\n"
+            f"💬 <i>Foydalanuvchiga javob berish uchun bu xabarga javob bering</i>"
         )
         
         sent_message = await bot.send_message(
@@ -110,9 +110,9 @@ async def handle_media_group_handler(message: Message, bot):
         
         # Отправляем подтверждение пользователю
         await message.answer(
-            f"✅ {hbold('Медиагруппа отправлена!')}\n\n"
-            f"📎 {hbold('Ваши файлы:')} Группа медиафайлов\n\n"
-            f"⏳ {hitalic('Мы получили ваши файлы и скоро ответим!')}",
+            f"✅ {hbold('Media guruhi yuborildi!')}\n\n"
+            f"📎 {hbold('Sizning fayllaringiz:')} Media fayllar guruhi\n\n"
+            f"⏳ {hitalic('Biz sizning fayllaringizni oldik va tez orada javob beramiz!')}",
             parse_mode="HTML"
         )
         
@@ -175,11 +175,11 @@ async def create_ticket_handler(message: Message, bot):
     try:
         # Формируем сообщение для группы
         group_message = (
-            f"🎫 <b>Новая заявка</b>\n\n"
-            f"👤 <b>Пользователь:</b> {user_info}\n"
-            f"⏰ <b>Время:</b> {datetime.now().strftime('%d.%m.%Y %H:%M')}\n"
-            f"📝 <b>Сообщение:</b>\n{message_text}\n\n"
-            f"💬 <i>Ответьте на это сообщение, чтобы ответить пользователю</i>"
+            f"🎫 <b>Yangi ariza</b>\n\n"
+            f"👤 <b>Foydalanuvchi:</b> {user_info}\n"
+            f"⏰ <b>Vaqt:</b> {datetime.now().strftime('%d.%m.%Y %H:%M')}\n"
+            f"📝 <b>Xabar:</b>\n{message_text}\n\n"
+            f"💬 <i>Foydalanuvchiga javob berish uchun bu xabarga javob bering</i>"
         )
         
         print(f"🔍 Отправка в группу ID: {ADMIN_GROUP_ID}")
@@ -224,10 +224,10 @@ async def create_ticket_handler(message: Message, bot):
         
         # Отправляем подтверждение пользователю
         confirmation_text = (
-            f"✅ {hbold('Заявка отправлена!')}\n\n"
-            f"📝 {hbold('Ваше сообщение:')} {message_text[:100]}{'...' if len(message_text) > 100 else ''}\n\n"
-            f"⏳ {hitalic('Мы получили вашу заявку и скоро ответим!')}\n\n"
-            f"💡 {hitalic('Ожидайте ответ от нашей службы поддержки')}"
+            f"✅ {hbold('Ariza yuborildi!')}\n\n"
+            f"📝 {hbold('Sizning xabaringiz:')} {message_text[:100]}{'...' if len(message_text) > 100 else ''}\n\n"
+            f"⏳ {hitalic('Biz sizning arizangizni oldik va tez orada javob beramiz!')}\n\n"
+            f"💡 {hitalic('Qo\'llab-quvvatlash xizmatimizdan javob kutib turing')}"
         )
         await message.answer(confirmation_text, parse_mode="HTML")
         

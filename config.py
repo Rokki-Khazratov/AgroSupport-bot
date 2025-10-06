@@ -19,13 +19,16 @@ if ADMIN_GROUP_ID:
         # Добавляем минус для обычных групп
         ADMIN_GROUP_ID = f"-{ADMIN_GROUP_ID}"
         print(f"✅ Добавлен минус для обычной группы: {ADMIN_GROUP_ID}")
+    
+    # Дополнительная проверка - если группа была обновлена до супергруппы
+    print(f"⚠️  Если группа была обновлена до супергруппы, используйте команду /getid в группе для получения нового ID")
 
 # Проверка обязательных переменных окружения
 if not BOT_TOKEN:
-    raise ValueError("BOT_TOKEN не найден в переменных окружения. Создайте .env файл на основе env.example")
+    raise ValueError("BOT_TOKEN muhit o'zgaruvchilarida topilmadi. env.example asosida .env fayl yarating")
 
 if not ADMIN_GROUP_ID:
-    raise ValueError("ADMIN_GROUP_ID не найден в переменных окружения. Создайте .env файл на основе env.example")
+    raise ValueError("ADMIN_GROUP_ID muhit o'zgaruvchilarida topilmadi. env.example asosida .env fayl yarating")
 
 # Дополнительные настройки
 LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')

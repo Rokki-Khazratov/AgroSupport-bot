@@ -29,12 +29,12 @@ async def handle_admin_reply(message: Message, bot):
     
     print(f"🔍 Текст сообщения, на которое отвечают: {replied_message.text[:100] if replied_message.text else 'Нет текста'}...")
     
-    # Проверяем, что это сообщение с заявкой (содержит "Новая заявка")
-    if not replied_message.text or "Новая заявка" not in replied_message.text:
-        print(f"❌ Сообщение не содержит 'Новая заявка', пропускаем")
+    # Проверяем, что это сообщение с заявкой (содержит "Yangi ariza")
+    if not replied_message.text or "Yangi ariza" not in replied_message.text:
+        print(f"❌ Сообщение не содержит 'Yangi ariza', пропускаем")
         await message.reply(
-            f"❌ {hbold('Ошибка')}\n\n"
-            f"Ответьте на сообщение с заявкой для отправки ответа пользователю."
+            f"❌ {hbold('Xatolik')}\n\n"
+            f"Foydalanuvchiga javob yuborish uchun ariza xabariga javob bering."
         )
         return
     
@@ -51,7 +51,7 @@ async def handle_admin_reply(message: Message, bot):
                 break
         
         if not user_info_line:
-            await message.reply("❌ Не удалось найти информацию о пользователе в заявке")
+            await message.reply("❌ Arizada foydalanuvchi haqida ma'lumot topilmadi")
             return
         
         # Извлекаем user_id из строки вида "ID: 12345"
@@ -65,16 +65,16 @@ async def handle_admin_reply(message: Message, bot):
         
         if not user_id:
             print(f"❌ Не удалось найти user_id в строке: {user_info_line}")
-            await message.reply("❌ Не удалось определить ID пользователя из заявки")
+            await message.reply("❌ Arizadan foydalanuvchi ID sini aniqlash mumkin emas")
             return
         
         # Получаем информацию об администраторе
         admin = message.from_user
-        admin_name = admin.full_name or "Администратор"
+        admin_name = admin.full_name or "Administrator"
         admin_username = admin.username or ""
         
         # Формируем текст ответа
-        reply_text = message.text or "Ответ администратора"
+        reply_text = message.text or "Administrator javobi"
         
         # Формируем информацию об админе
         admin_info = f"@{admin_username}" if admin_username else f"ID: {admin.id}"
@@ -84,10 +84,10 @@ async def handle_admin_reply(message: Message, bot):
         try:
             # Формируем ответ для пользователя
             user_reply_text = (
-                f"✅ {hbold('Ответ от поддержки')}\n\n"
-                f"👨‍💼 {hbold('Администратор:')} {admin_info}\n"
-                f"⏰ {hbold('Время:')} {datetime.now().strftime('%d.%m.%Y %H:%M')}\n\n"
-                f"💬 {hbold('Ответ:')}\n{reply_text}"
+                f"✅ {hbold('Qo\'llab-quvvatlashdan javob')}\n\n"
+                f"👨‍💼 {hbold('Administrator:')} {admin_info}\n"
+                f"⏰ {hbold('Vaqt:')} {datetime.now().strftime('%d.%m.%Y %H:%M')}\n\n"
+                f"💬 {hbold('Javob:')}\n{reply_text}"
             )
             
             print(f"🔍 Отправка ответа пользователю ID: {user_id}")
@@ -117,23 +117,23 @@ async def handle_admin_reply(message: Message, bot):
             
             # Подтверждаем администратору об отправке
             await message.reply(
-                f"✅ {hbold('Ответ отправлен')}\n\n"
-                f"👤 Пользователю ID: {user_id}\n"
-                f"📝 Ответ: {reply_text[:50]}{'...' if len(reply_text) > 50 else ''}"
+                f"✅ {hbold('Javob yuborildi')}\n\n"
+                f"👤 Foydalanuvchi ID: {user_id}\n"
+                f"📝 Javob: {reply_text[:50]}{'...' if len(reply_text) > 50 else ''}"
             )
             
         except Exception as e:
             # Если не удалось отправить пользователю
             await message.reply(
-                f"❌ {hbold('Ошибка отправки')}\n\n"
-                f"Не удалось отправить ответ пользователю.\n"
-                f"Возможно, пользователь заблокировал бота.\n\n"
-                f"👤 Пользователь ID: {user_id}\n"
-                f"❌ Ошибка: {str(e)[:100]}"
+                f"❌ {hbold('Yuborish xatoligi')}\n\n"
+                f"Foydalanuvchiga javob yuborish mumkin emas.\n"
+                f"Ehtimol, foydalanuvchi bot ni bloklagan.\n\n"
+                f"👤 Foydalanuvchi ID: {user_id}\n"
+                f"❌ Xatolik: {str(e)[:100]}"
             )
     
     except Exception as e:
         await message.reply(
-            f"❌ {hbold('Ошибка обработки')}\n\n"
-            f"Произошла ошибка при обработке ответа: {str(e)[:100]}"
+            f"❌ {hbold('Qayta ishlash xatoligi')}\n\n"
+            f"Javobni qayta ishlashda xatolik yuz berdi: {str(e)[:100]}"
         )
