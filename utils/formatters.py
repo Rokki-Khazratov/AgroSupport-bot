@@ -10,7 +10,13 @@ def format_ticket_for_group(ticket: Ticket) -> str:
     if ticket.user_name:
         user_info = f"{ticket.user_name} ({user_info})"
     
-    created_time = ticket.created_at.strftime("%d.%m.%Y %H:%M") if ticket.created_at else "Неизвестно"
+    if ticket.created_at:
+        if isinstance(ticket.created_at, str):
+            created_time = ticket.created_at
+        else:
+            created_time = ticket.created_at.strftime("%d.%m.%Y %H:%M")
+    else:
+        created_time = "Неизвестно"
     
     return (
         f"🎫 <b>Заявка #{ticket.id}</b>\n\n"
@@ -28,7 +34,13 @@ def format_reply_for_user(reply: Reply, ticket_id: int) -> str:
     if reply.admin_name:
         admin_info = f"{reply.admin_name} ({admin_info})"
     
-    created_time = reply.created_at.strftime("%d.%m.%Y %H:%M") if reply.created_at else "Неизвестно"
+    if reply.created_at:
+        if isinstance(reply.created_at, str):
+            created_time = reply.created_at
+        else:
+            created_time = reply.created_at.strftime("%d.%m.%Y %H:%M")
+    else:
+        created_time = "Неизвестно"
     
     return (
         f"✅ <b>Ответ от поддержки</b>\n\n"
@@ -64,8 +76,21 @@ def format_ticket_status(ticket: Ticket) -> str:
         "closed": "Закрыта"
     }
     
-    created_time = ticket.created_at.strftime("%d.%m.%Y %H:%M") if ticket.created_at else "Неизвестно"
-    updated_time = ticket.updated_at.strftime("%d.%m.%Y %H:%M") if ticket.updated_at else "Не обновлялась"
+    if ticket.created_at:
+        if isinstance(ticket.created_at, str):
+            created_time = ticket.created_at
+        else:
+            created_time = ticket.created_at.strftime("%d.%m.%Y %H:%M")
+    else:
+        created_time = "Неизвестно"
+    
+    if ticket.updated_at:
+        if isinstance(ticket.updated_at, str):
+            updated_time = ticket.updated_at
+        else:
+            updated_time = ticket.updated_at.strftime("%d.%m.%Y %H:%M")
+    else:
+        updated_time = "Не обновлялась"
     
     return (
         f"🎫 <b>Заявка #{ticket.id}</b>\n\n"
