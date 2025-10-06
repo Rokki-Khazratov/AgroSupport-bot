@@ -44,13 +44,19 @@ async def handle_admin_reply(message: Message, bot):
     try:
         # Парсим текст сообщения для получения user_id
         lines = replied_message.text.split('\n')
+        print(f"🔍 Все строки сообщения:")
+        for i, line in enumerate(lines):
+            print(f"  {i}: {line}")
+        
         user_info_line = None
         for line in lines:
-            if "Пользователь:" in line:
+            if "Foydalanuvchi:" in line:
                 user_info_line = line
+                print(f"✅ Найдена строка с пользователем: {user_info_line}")
                 break
         
         if not user_info_line:
+            print(f"❌ Не найдена строка с 'Foydalanuvchi:' в сообщении")
             await message.reply("❌ Arizada foydalanuvchi haqida ma'lumot topilmadi")
             return
         
@@ -84,7 +90,7 @@ async def handle_admin_reply(message: Message, bot):
         try:
             # Формируем ответ для пользователя
             user_reply_text = (
-                f"✅ {hbold('Qo\'llab-quvvatlashdan javob')}\n\n"
+                f"✅ {hbold('Qo' + chr(39) + 'llab-quvvatlashdan javob')}\n\n"
                 f"👨‍💼 {hbold('Administrator:')} {admin_info}\n"
                 f"⏰ {hbold('Vaqt:')} {datetime.now().strftime('%d.%m.%Y %H:%M')}\n\n"
                 f"💬 {hbold('Javob:')}\n{reply_text}"

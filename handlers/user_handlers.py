@@ -13,7 +13,7 @@ router = Router()
 async def start_handler(message: Message):
     """Обработчик команды /start"""
     welcome_text = (
-        f"👋 {hbold('Qo\'llab-quvvatlash xizmatiga xush kelibsiz!')}\n\n"
+        f"👋 {hbold('Qo' + chr(39) + 'llab-quvvatlash xizmatiga xush kelibsiz!')}\n\n"
         f"📝 {hitalic('Ariza yaratish uchun har qanday xabar yuboring')}\n\n"
         f"🔧 {hbold('Mavjud buyruqlar:')}\n"
         f"• /help - yordam va ko'rsatmalar\n\n"
@@ -42,7 +42,7 @@ async def get_id_handler(message: Message):
 async def help_handler(message: Message):
     """Обработчик команды /help"""
     help_text = (
-        f"📚 {hbold('Bot ishlatish bo\'yicha yordam')}\n\n"
+        f"📚 {hbold('Bot ishlatish bo' + chr(39) + 'yicha yordam')}\n\n"
         f"🎫 {hbold('Ariza qanday yaratish:')}\n"
         f"• Bot ga har qanday xabar yuboring\n"
         f"• Muammoingiz yoki savolingizni tasvirlab bering\n"
@@ -227,7 +227,7 @@ async def create_ticket_handler(message: Message, bot):
             f"✅ {hbold('Ariza yuborildi!')}\n\n"
             f"📝 {hbold('Sizning xabaringiz:')} {message_text[:100]}{'...' if len(message_text) > 100 else ''}\n\n"
             f"⏳ {hitalic('Biz sizning arizangizni oldik va tez orada javob beramiz!')}\n\n"
-            f"💡 {hitalic('Qo\'llab-quvvatlash xizmatimizdan javob kutib turing')}"
+            f"💡 {hitalic('Qo' + chr(39) + 'llab-quvvatlash xizmatimizdan javob kutib turing')}"
         )
         await message.answer(confirmation_text, parse_mode="HTML")
         
