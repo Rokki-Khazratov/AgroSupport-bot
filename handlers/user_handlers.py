@@ -99,10 +99,11 @@ async def create_ticket_handler(message: Message, bot):
     else:
         message_text = "📎 Медиафайл"
     
-    # Формируем информацию о пользователе
-    user_info = f"@{user_username}" if user_username else f"ID: {user_id}"
-    if user_name:
-        user_info = f"{user_name} ({user_info})"
+    # Формируем информацию о пользователе (всегда включаем ID)
+    if user_username:
+        user_info = f"{user_name} (@{user_username}) ID: {user_id}"
+    else:
+        user_info = f"{user_name} (ID: {user_id})"
     
     # Отправляем заявку в группу администраторов
     try:

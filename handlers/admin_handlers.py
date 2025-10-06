@@ -49,8 +49,10 @@ async def handle_admin_reply(message: Message, bot):
             id_match = re.search(r'ID:\s*(\d+)', user_info_line)
             if id_match:
                 user_id = int(id_match.group(1))
+                print(f"🔍 Найден user_id: {user_id}")
         
         if not user_id:
+            print(f"❌ Не удалось найти user_id в строке: {user_info_line}")
             await message.reply("❌ Не удалось определить ID пользователя из заявки")
             return
         
@@ -76,12 +78,17 @@ async def handle_admin_reply(message: Message, bot):
                 f"💬 {hbold('Ответ:')}\n{reply_text}"
             )
             
+            print(f"🔍 Отправка ответа пользователю ID: {user_id}")
+            print(f"📝 Текст ответа: {reply_text[:50]}...")
+            
             # Отправляем ответ пользователю
             await bot.send_message(
                 chat_id=user_id,
                 text=user_reply_text,
                 parse_mode="HTML"
             )
+            
+            print(f"✅ Ответ успешно отправлен пользователю ID: {user_id}")
             
             # Подтверждаем администратору об отправке
             await message.reply(
