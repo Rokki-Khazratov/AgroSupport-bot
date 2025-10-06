@@ -14,7 +14,8 @@ async def handle_admin_reply(message: Message, db, bot):
     """Обработчик ответов администраторов в группе"""
     
     # Проверяем, что это ответ на сообщение в группе
-    if not message.chat.id == int(message.bot.config.ADMIN_GROUP_ID):
+    from config import ADMIN_GROUP_ID
+    if not message.chat.id == int(ADMIN_GROUP_ID):
         return
     
     # Получаем сообщение, на которое отвечают
@@ -89,7 +90,8 @@ async def close_ticket_handler(message: Message, db):
     """Обработчик команды закрытия заявки"""
     
     # Проверяем, что это группа администраторов
-    if not message.chat.id == int(message.bot.config.ADMIN_GROUP_ID):
+    from config import ADMIN_GROUP_ID
+    if not message.chat.id == int(ADMIN_GROUP_ID):
         return
     
     # Извлекаем номер заявки из команды
@@ -137,7 +139,8 @@ async def stats_handler(message: Message, db):
     """Обработчик команды статистики заявок"""
     
     # Проверяем, что это группа администраторов
-    if not message.chat.id == int(message.bot.config.ADMIN_GROUP_ID):
+    from config import ADMIN_GROUP_ID
+    if not message.chat.id == int(ADMIN_GROUP_ID):
         return
     
     # Здесь можно добавить получение статистики из базы данных
