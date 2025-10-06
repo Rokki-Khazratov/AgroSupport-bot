@@ -59,6 +59,72 @@ async def help_handler(message: Message):
     await message.answer(help_text)
 
 
+@router.message(F.media_group_id)
+async def handle_media_group_handler(message: Message, bot):
+    """Обработчик медиагрупп (несколько медиафайлов в одном сообщении)"""
+    
+    # Обрабатываем только сообщения из личных чатов (не из групп)
+    if message.chat.type != 'private':
+        return
+    
+    # Игнорируем команды
+    if message.text and message.text.startswith('/'):
+        return
+    
+    print(f"🔍 Получена медиагруппа от пользователя {message.from_user.id}")
+    
+    # Для медиагрупп просто пересылаем все файлы
+    user = message.from_user
+    user_id = user.id
+    user_name = user.full_name or "Неизвестно"
+    user_username = user.username or ""
+    
+    # Формируем информацию о пользователе
+    if user_username:
+        user_info = f"{user_name} (@{user_username}) ID: {user_id}"
+    else:
+        user_info = f"{user_name} (ID: {user_id})"
+    
+    try:
+        # Отправляем уведомление о медиагруппе
+        group_message = (
+            f"🎫 <b>Новая заявка (Медиагруппа)</b>\n\n"
+            f"👤 <b>Пользователь:</b> {user_info}\n"
+            f"⏰ <b>Время:</b> {datetime.now().strftime('%d.%m.%Y %H:%M')}\n"
+            f"📎 <b>Медиафайлов:</b> Группа файлов\n\n"
+            f"💬 <i>Ответьте на это сообщение, чтобы ответить пользователю</i>"
+        )
+        
+        sent_message = await bot.send_message(
+            chat_id=ADMIN_GROUP_ID,
+            text=group_message,
+            parse_mode="HTML"
+        )
+        
+        # Пересылаем медиагруппу
+        await bot.forward_message(
+            chat_id=ADMIN_GROUP_ID,
+            from_chat_id=message.chat.id,
+            message_id=message.message_id
+        )
+        
+        # Отправляем подтверждение пользователю
+        await message.answer(
+            f"✅ {hbold('Медиагруппа отправлена!')}\n\n"
+            f"📎 {hbold('Ваши файлы:')} Группа медиафайлов\n\n"
+            f"⏳ {hitalic('Мы получили ваши файлы и скоро ответим!')}",
+            parse_mode="HTML"
+        )
+        
+    except Exception as e:
+        print(f"❌ Ошибка обработки медиагруппы: {e}")
+        await message.answer(
+            f"⚠️ {hbold('Ошибка при отправке медиагруппы')}\n\n"
+            f"❌ Не удалось отправить файлы в группу поддержки.\n"
+            f"Попробуйте отправить файлы по одному."
+        )
+
+
 @router.message(F.text | F.photo | F.document | F.video | F.audio | F.voice | F.video_note | F.sticker)
 async def create_ticket_handler(message: Message, bot):
     """Обработчик создания заявки от пользователя"""
@@ -136,12 +202,25 @@ async def create_ticket_handler(message: Message, bot):
         print(f"✅ Сообщение отправлено в группу, ID сообщения: {sent_message.message_id}")
         
         # Если это медиа-сообщение, пересылаем оригинал
-        if not message.text and not message.caption:
-            await bot.forward_message(
-                chat_id=ADMIN_GROUP_ID,
-                from_chat_id=message.chat.id,
-                message_id=message.message_id
-            )
+        if message.photo or message.document or message.video or message.audio or message.voice or message.video_note or message.sticker:
+            print(f"🔍 Пересылаем медиафайл в группу")
+            try:
+                await bot.forward_message(
+                    chat_id=ADMIN_GROUP_ID,
+                    from_chat_id=message.chat.id,
+                    message_id=message.message_id
+                )
+                print(f"✅ Медиафайл переслан в группу")
+            except Exception as e:
+                print(f"❌ Ошибка пересылки медиафайла: {e}")
+                # Отправляем текстовое уведомление о медиафайле
+                await bot.send_message(
+                    chat_id=ADMIN_GROUP_ID,
+                    text=f"📎 <b>Медиафайл</b> от пользователя (не удалось переслать)\n"
+                         f"👤 Пользователь: {user_info}\n"
+                         f"📝 Описание: {message_text}",
+                    parse_mode="HTML"
+                )
         
         # Отправляем подтверждение пользователю
         confirmation_text = (

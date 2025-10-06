@@ -102,6 +102,19 @@ async def handle_admin_reply(message: Message, bot):
             
             print(f"✅ Ответ успешно отправлен пользователю ID: {user_id}")
             
+            # Если ответ содержит медиафайл, пересылаем его пользователю
+            if message.photo or message.document or message.video or message.audio or message.voice or message.video_note or message.sticker:
+                print(f"🔍 Пересылаем медиафайл пользователю")
+                try:
+                    await bot.forward_message(
+                        chat_id=user_id,
+                        from_chat_id=message.chat.id,
+                        message_id=message.message_id
+                    )
+                    print(f"✅ Медиафайл переслан пользователю")
+                except Exception as e:
+                    print(f"❌ Ошибка пересылки медиафайла пользователю: {e}")
+            
             # Подтверждаем администратору об отправке
             await message.reply(
                 f"✅ {hbold('Ответ отправлен')}\n\n"
