@@ -23,6 +23,21 @@ async def start_handler(message: Message):
     await message.answer(welcome_text)
 
 
+@router.message(Command("getid"))
+async def get_id_handler(message: Message):
+    """Обработчик команды /getid - показывает ID чата"""
+    chat_id = message.chat.id
+    chat_type = message.chat.type
+    
+    await message.answer(
+        f"🆔 <b>Информация о чате:</b>\n\n"
+        f"📊 <b>Тип:</b> {chat_type}\n"
+        f"🆔 <b>ID:</b> <code>{chat_id}</code>\n\n"
+        f"💡 <i>Скопируйте этот ID для настройки бота</i>",
+        parse_mode="HTML"
+    )
+
+
 @router.message(Command("help"))
 async def help_handler(message: Message):
     """Обработчик команды /help"""
@@ -93,6 +108,14 @@ async def create_ticket_handler(message: Message, bot):
         )
         
         print(f"🔍 Отправка в группу ID: {ADMIN_GROUP_ID}")
+        
+        # Сначала проверим, может ли бот получить информацию о чате
+        try:
+            chat_info = await bot.get_chat(ADMIN_GROUP_ID)
+            print(f"✅ Информация о чате: {chat_info.title} (тип: {chat_info.type})")
+        except Exception as chat_error:
+            print(f"❌ Не удалось получить информацию о чате: {chat_error}")
+            raise chat_error
         
         # Отправляем сообщение в группу
         sent_message = await bot.send_message(
