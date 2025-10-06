@@ -2,6 +2,7 @@ from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.utils.markdown import hbold, hitalic
 from datetime import datetime
+import re
 
 from config import ADMIN_GROUP_ID
 
@@ -41,21 +42,16 @@ async def handle_admin_reply(message: Message, bot):
             await message.reply("❌ Не удалось найти информацию о пользователе в заявке")
             return
         
-        # Извлекаем user_id из строки вида "ID: 12345" или "@username"
+        # Извлекаем user_id из строки вида "ID: 12345"
         user_id = None
         if "ID:" in user_info_line:
             # Ищем ID в формате "ID: 12345"
-            import re
             id_match = re.search(r'ID:\s*(\d+)', user_info_line)
             if id_match:
                 user_id = int(id_match.group(1))
-        elif "@" in user_info_line:
-            # Если есть username, нужно будет получить user_id по-другому
-            # Пока просто пропускаем такие случаи
-            pass
         
         if not user_id:
-            await message.reply("❌ Не удалось определить ID пользователя")
+            await message.reply("❌ Не удалось определить ID пользователя из заявки")
             return
         
         # Получаем информацию об администраторе
@@ -100,11 +96,12 @@ async def handle_admin_reply(message: Message, bot):
                 f"❌ {hbold('Ошибка отправки')}\n\n"
                 f"Не удалось отправить ответ пользователю.\n"
                 f"Возможно, пользователь заблокировал бота.\n\n"
-                f"👤 Пользователь ID: {user_id}"
+                f"👤 Пользователь ID: {user_id}\n"
+                f"❌ Ошибка: {str(e)[:100]}"
             )
     
     except Exception as e:
         await message.reply(
             f"❌ {hbold('Ошибка обработки')}\n\n"
-            f"Произошла ошибка при обработке ответа: {str(e)}"
+            f"Произошла ошибка при обработке ответа: {str(e)[:100]}"
         )
