@@ -8,6 +8,10 @@ load_dotenv()
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 ADMIN_GROUP_ID = os.getenv('ADMIN_GROUP_ID')
 
+# Автоматически добавляем минус для ID группы если его нет
+if ADMIN_GROUP_ID and not ADMIN_GROUP_ID.startswith('-'):
+    ADMIN_GROUP_ID = f"-{ADMIN_GROUP_ID}"
+
 # Проверка обязательных переменных окружения
 if not BOT_TOKEN:
     raise ValueError("BOT_TOKEN не найден в переменных окружения. Создайте .env файл на основе env.example")
