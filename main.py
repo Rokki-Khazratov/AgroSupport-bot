@@ -5,7 +5,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
 from config import BOT_TOKEN, LOG_LEVEL
-from handlers import user_handlers, admin_handlers
+from handlers import user_handlers, admin_handlers, callback_handlers
 
 # Настройка логирования
 logging.basicConfig(
@@ -31,8 +31,9 @@ async def main():
     # Создаем диспетчер
     dp = Dispatcher()
     
-    # Регистрируем роутеры (admin_handlers первым для приоритета)
+    # Регистрируем роутеры (порядок важен: admin → callback → user)
     dp.include_router(admin_handlers.router)
+    dp.include_router(callback_handlers.router)
     dp.include_router(user_handlers.router)
     
     try:

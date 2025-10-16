@@ -1,26 +1,51 @@
 from aiogram import Router, F
-from aiogram.types import Message
+from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.filters import Command, CommandStart
 from aiogram.utils.markdown import hbold, hitalic
 from datetime import datetime
 
-from config import ADMIN_GROUP_ID
+from config import ADMIN_GROUP_ID, APK_VERSION, ADMIN_ID
 
 router = Router()
 
 
+def get_main_keyboard():
+    """Создает основную клавиатуру с кнопками"""
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(
+                text="📞 Qo'llab-quvvatlash",
+                callback_data="support"
+            ),
+            InlineKeyboardButton(
+                text=f"📱 Yuklab olish v{APK_VERSION}",
+                callback_data="download_apk"
+            )
+        ]
+    ])
+    return keyboard
+
+
 @router.message(CommandStart())
 async def start_handler(message: Message):
-    """Обработчик команды /start"""
+    """Обработчик команды /start - показывает главное меню"""
     welcome_text = (
-        f"👋 {hbold('Qo' + chr(39) + 'llab-quvvatlash xizmatiga xush kelibsiz!')}\n\n"
-        f"📝 {hitalic('Ariza yaratish uchun har qanday xabar yuboring')}\n\n"
-        f"🔧 {hbold('Mavjud buyruqlar:')}\n"
-        f"• /help - yordam va ko'rsatmalar\n\n"
-        f"💬 {hitalic('Biz sizga har qanday savollarni hal qilishda yordam beramiz!')}"
+        f"👋 {hbold('GeoAgro Support Bot ga xush kelibsiz!')}\n\n"
+        f"Kerakli bo'limni tanlang:"
     )
     
-    await message.answer(welcome_text)
+    await message.answer(welcome_text, reply_markup=get_main_keyboard())
+
+
+@router.message(Command("menu"))
+async def menu_handler(message: Message):
+    """Обработчик команды /menu - показывает главное меню"""
+    menu_text = (
+        f"📋 {hbold('Asosiy menyu')}\n\n"
+        f"Kerakli bo'limni tanlang:"
+    )
+    
+    await message.answer(menu_text, reply_markup=get_main_keyboard())
 
 
 @router.message(Command("getid"))
@@ -48,8 +73,12 @@ async def help_handler(message: Message):
         f"• Muammoingiz yoki savolingizni tasvirlab bering\n"
         f"• Rasmlar va hujjatlarni biriktirish mumkin\n\n"
         f"📊 {hbold('Buyruqlar:')}\n"
-        f"• /start - bot bilan ishlashni boshlash\n"
+        f"• /start - asosiy menyu\n"
+        f"• /menu - menyuni qayta ochish\n"
         f"• /help - bu yordam\n\n"
+        f"📱 {hbold('Ilova yuklab olish:')}\n"
+        f"• /start yoki /menu buyrug'ini yuboring\n"
+        f"• " + chr(34) + "Yuklab olish" + chr(34) + " tugmasini bosing\n\n"
         f"⏰ {hbold('Javob vaqti:')}\n"
         f"• Odatda 24 soat ichida javob beramiz\n"
         f"• Favqulodda holatlarda - tezroq\n\n"
@@ -57,6 +86,38 @@ async def help_handler(message: Message):
     )
     
     await message.answer(help_text)
+
+
+@router.message(F.document, F.chat.type == "private")
+async def handle_document_from_admin(message: Message):
+    """Обработчик документов от админа - показывает file_id для APK"""
+    
+    # Проверяем, что это админ
+    if not ADMIN_ID or str(message.from_user.id) != str(ADMIN_ID):
+        return  # Не обрабатываем, пройдет в create_ticket_handler
+    
+    # Получаем информацию о документе
+    document = message.document
+    file_name = document.file_name
+    file_size_mb = document.file_size / (1024 * 1024)
+    file_id = document.file_id
+    
+    response_text = (
+        f"📎 {hbold('Hujjat haqida ma' + chr(39) + 'lumot')}\n\n"
+        f"📄 {hbold('Fayl nomi:')} {file_name}\n"
+        f"📦 {hbold('Hajmi:')} {file_size_mb:.2f} MB\n\n"
+        f"🆔 {hbold('File ID:')}\n"
+        f"<code>{file_id}</code>\n\n"
+        f"💾 {hitalic('Serverdagi .env ga qo' + chr(39) + 'shing:')}\n"
+        f"<code>APK_FILE_ID={file_id}</code>\n\n"
+        f"🔄 {hitalic('Keyin botni qayta ishga tushiring:')}\n"
+        f"<code>systemctl restart agro-bot</code>"
+    )
+    
+    await message.answer(response_text, parse_mode="HTML")
+    
+    print(f"📋 Admin {message.from_user.id} dan file_id olindi: {file_id}")
+    print(f"📄 Fayl: {file_name} ({file_size_mb:.2f} MB)")
 
 
 @router.message(F.media_group_id)

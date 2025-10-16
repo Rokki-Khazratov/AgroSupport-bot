@@ -33,5 +33,12 @@ if not ADMIN_GROUP_ID:
 # Дополнительные настройки
 LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
 
+# APK настройки
+APK_FILE_ID = os.getenv('APK_FILE_ID')  # file_id из Telegram (приоритетный метод)
+APK_VERSION = os.getenv('APK_VERSION', '2.2.0')  # Версия APK
+APK_PATH = os.getenv('APK_PATH', '/root/projects/geoagro/support-bot/apk/geoagro.apk')  # Путь к локальному файлу (fallback)
+ADMIN_ID = os.getenv('ADMIN_ID')  # ID главного администратора для получения file_id
+
 # Выводим финальный ID группы для отладки
 print(f"🔧 Сконфигурированный ADMIN_GROUP_ID: {ADMIN_GROUP_ID}")
+print(f"📱 APK версия: {APK_VERSION}")
